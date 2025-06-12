@@ -4,6 +4,7 @@ import argparse
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from functions.call_function import call_function
 
 def main():
     parser = argparse.ArgumentParser(description="Process a prompt with gemini.")
@@ -112,11 +113,15 @@ def main():
     )
 
     if args.verbose: print(f"User prompt: {user_prompt}")
+
     if response.text:
         print("Response:")
         print(response.text)
     for function_call_part in response.function_calls:
-        print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+        function_call_result = call_function(function_call_part, args.verbose)
+        if not function_call_result.parts[0].function_response.response:
+            raise Exception("Error call_function inappropriate output")
+        if args.verbose: print(f"-> {function_call_result.parts[0].function_response.response}")
     if args.verbose: print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
     if args.verbose: print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
 
