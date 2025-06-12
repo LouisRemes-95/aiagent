@@ -14,4 +14,4 @@ def get_file_content(working_directory, file_path):
             return content
         
     except Exception as e:
-        print(f"Error: {e.__class__.__name__}: {e}")
+        return f"Error: {e.__class__.__name__}: {e}"

@@ -8,10 +8,10 @@ def get_files_info(working_directory, directory=None):
         if not os.path.isdir(full_path):
             return f'Error: "{directory}" is not a directory'
 
-            return "\n".join([
+        return "\n".join([
                 f"{content}: file_size={os.path.getsize(os.path.join(full_path, content))}, is_dir={os.path.isdir(os.path.join(full_path, content))}"
                 for content in os.listdir(full_path)
             ])
         
     except Exception as e:
-        print(f"Error: {e.__class__.__name__}: {e}")
+        return f"Error: {e.__class__.__name__}: {e}"
